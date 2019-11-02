@@ -1,17 +1,35 @@
 <template>
 	<div>
-		<v-breadcrumbs :items="breadcrumbs" large>
-            <template v-if="customDiv" v-slot:divider>
-                <v-icon>mdi-chevron-right</v-icon>
-            </template>
-        </v-breadcrumbs>
+		<v-row no-gutters class="mb-3">
+			<v-col md="8" >
+				<v-breadcrumbs :items="breadcrumbs" large>
+					<template v-slot:divider>
+						<v-icon>mdi-chevron-right</v-icon>
+					</template>
+				</v-breadcrumbs>
+			</v-col>
+			<v-col md="3">
+				<v-text-field
+					v-model="search"
+					append-icon="mdi-search"
+					label="Search"
+					single-line
+					hide-details
+				></v-text-field>
+			</v-col>
+			<v-col md="1" class="mt-4">
+				<v-btn color="teal" fab small dark @click="searchBooks()">
+					<v-icon>mdi-magnify</v-icon>
+				</v-btn>
+			</v-col>
+		</v-row>
 		<v-card>
 			<v-toolbar flat color="grey lighten-3">
 				<v-toolbar-title class="title">Livros cadastrados</v-toolbar-title>
 				<router-link :to="{ name: 'createBook' }">
 					<v-tooltip right>
 						<template v-slot:activator="{ on }">
-							<v-btn class="ml-3" text icon color="primary" v-on="on">
+							<v-btn class="ml-3" text icon color="teal" v-on="on">
 								<v-icon>mdi-plus</v-icon>
 							</v-btn>
 						</template>
@@ -68,6 +86,19 @@
 						<tr v-if="books.length == 0">
 							<td colspan="4">Nenhum registro encontrado</td>
 						</tr>
+						<tr>
+							<td colspan="4">
+								<v-row justify="end">
+									<v-col cols="6" offset="8">
+										<v-pagination
+											v-model="page"
+											:length="5"
+											circle
+										></v-pagination>
+									</v-col>
+								</v-row>
+							</td>
+						</tr>
 					</tbody>
 				</template>
 			</v-simple-table>
@@ -85,16 +116,18 @@ export default {
 			breadcrumbs: [
                 {
                     text: 'Dashboard',
-                    disabled: false,
-                    href: '/',
+					disabled: false,
+					href: '/'
                 },
                 {
                     text: 'Livros',
                     disabled: true,
-                    href: '/livros',
+                    to: { name: 'listBooks' }
                 },
             ],
 			books: [],
+			search: '',
+			page: 0
 		}
 	},
 	methods: {
@@ -125,14 +158,26 @@ export default {
 				}
 			})
 		},
-		getAllBooks(){
-			this.axios.get('books/').then(response => {
-				this.books = response.data;
+		getAllBooks(page) {
+			
+			this.axios.get(`books/page=${page}`).then(response => {
+				this.books = { ...response.data};
+			});
+		},
+		searchBooks() {
+			let autor = this.search;
+			this.axios.get(`books?autor=${autor}`).then(response => {
+				this.books = { ...response.data};
 			});
 		}
 	},
     created() {
-		this.getAllBooks();
-    }
+		this.getAllBooks(this.page);
+	},
+	watch: {
+		page: (value) => {
+			this.getAllBooks(value-1);
+		}
+	}
   }
 </script>

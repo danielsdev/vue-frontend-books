@@ -1,7 +1,7 @@
 <template>
 	<div>
         <v-breadcrumbs :items="breadcrumbs" large>
-            <template v-if="customDiv" v-slot:divider>
+            <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
             </template>
         </v-breadcrumbs>
@@ -72,17 +72,17 @@ export default {
                 {
                     text: 'Dashboard',
                     disabled: false,
-                    href: '/',
+                    to: { name: 'home'},
                 },
                 {
                     text: 'Livros',
                     disabled: false,
-                    href: '/livros',
+                    to: { name: 'listBooks' }
                 },
                 {
                     text: 'Capítulos',
                     disabled: true,
-                    href: '',
+                    to: { name: 'listChapters' }
                 },
             ],
             book: {},
