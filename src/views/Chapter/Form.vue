@@ -30,7 +30,7 @@
 				<v-btn 
 					large 
 					:disabled="!valid" 
-					color="primary" 
+					color="teal" 
 					class="mt-5" 
 					@click="submitForm">
 					Salvar

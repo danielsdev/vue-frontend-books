@@ -5,6 +5,14 @@
         app
         >
             <v-list dense>
+                 <v-list-item link :to="{name: 'home'}">
+                    <v-list-item-action>
+                        <v-icon>mdi-home</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>Home</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
                 <v-list-group>
                     <template v-slot:activator>
                         <v-list-item class="no-padding">
@@ -42,7 +50,7 @@
             dark
         >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-            <v-toolbar-title>Application</v-toolbar-title>
+            <v-toolbar-title>Aplicação</v-toolbar-title>
         </v-app-bar>
 
         <v-content>

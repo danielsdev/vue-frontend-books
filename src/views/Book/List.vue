@@ -12,7 +12,7 @@
 				<v-text-field
 					v-model="search"
 					append-icon="mdi-search"
-					label="Search"
+					label="Buscar por título"
 					single-line
 					hide-details
 				></v-text-field>
@@ -20,6 +20,9 @@
 			<v-col md="1" class="mt-4">
 				<v-btn color="teal" fab small dark @click="searchBooks()">
 					<v-icon>mdi-magnify</v-icon>
+				</v-btn>
+				<v-btn color="red" class="ml-2" fab small dark v-if="search != ''" @click="removeSearch()">
+					<v-icon>mdi-close</v-icon>
 				</v-btn>
 			</v-col>
 		</v-row>
@@ -158,26 +161,30 @@ export default {
 				}
 			})
 		},
-		getAllBooks(page) {
+		getAllBooks(page = 0) {
 			
-			this.axios.get(`books/page=${page}`).then(response => {
+			this.axios.get(`books?page=${page}`).then(response => {
 				this.books = { ...response.data};
 			});
 		},
 		searchBooks() {
-			let autor = this.search;
-			this.axios.get(`books?autor=${autor}`).then(response => {
+			let title = this.search;
+			this.axios.get(`books?titulo=${title}`).then(response => {
 				this.books = { ...response.data};
 			});
+		},
+		removeSearch() {
+			this.search = '';
+			this.getAllBooks();
 		}
 	},
     created() {
 		this.getAllBooks(this.page);
 	},
 	watch: {
-		page: (value) => {
-			this.getAllBooks(value-1);
-		}
+		page: function (val) {
+			this.getAllBooks(val-1);
+		},
 	}
   }
 </script>

@@ -11,7 +11,7 @@
                 <router-link :to="{ name: 'createChapters', params: {bookId: book._id } }">
 					<v-tooltip right>
 						<template v-slot:activator="{ on }">
-							<v-btn class="ml-3" text icon color="primary" v-on="on">
+							<v-btn class="ml-3" text icon color="teal" v-on="on">
 								<v-icon>mdi-plus</v-icon>
 							</v-btn>
 						</template>
